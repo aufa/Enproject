@@ -1,0 +1,36 @@
+{
+    "name": "aufa/enproject",
+    "description": "Enproject Simple PHP Framework Library",
+    "keywords": ["Framework", "Micro Framework", "PHP Helper"],
+    "homepage": "https://www.nwm.co.id/",
+    "authors": [
+        {
+            "name": "awan",
+            "email": "nawa@yahoo.com",
+            "homepage":"https://www.nwm.co.id",
+            "role": "Developer"
+        }
+    ],
+    "version": "0.1.0",
+    "license": "GPL-3.0+",
+    "type": "library",
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aufa\\Enproject\\": "src/Enproject"
+        },
+        "files": [
+            "src/Bootstrap.php"
+        ]
+    },
+    "suggests": {
+        "ext-mcrypt": "For better encryption method"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.5.*"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
