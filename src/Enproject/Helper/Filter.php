@@ -84,11 +84,12 @@ class Filter extends Singleton
      * Entities the Multybytes string
      *
      * @param string $string the string to detect multibytes
+     * @param boolean $entities  true if want to entity the output
      */
     public static function multibyteEntities($string, $entities = true)
     {
         if (!function_exists('iconv') || ! preg_match("/[^\x20-\x7f\s]/", $string)) { // add \n\r\t as ASCII
-                return $entities ? htmlentities(html_entity_decode($string)) : $string;
+            return $entities ? htmlentities(html_entity_decode($string)) : $string;
         }
 
         return preg_replace_callback('/[\x{80}-\x{10FFFF}]/u', function ($m) {
@@ -533,6 +534,76 @@ class Filter extends Singleton
             $double_chars['in'] = array(chr(140), chr(156), chr(198), chr(208), chr(222), chr(223), chr(230), chr(240), chr(254));
             $double_chars['out'] = array('OE', 'oe', 'AE', 'DH', 'TH', 'ss', 'ae', 'dh', 'th');
             $string = str_replace($double_chars['in'], $double_chars['out'], $string);
+        }
+
+        return $string;
+    }
+
+    /**
+     * Escaping or add backslash if has no escaped of single quote
+     * @param  mixed    $string values to be escaped
+     * @return mixed
+     */
+    public static function escapeSingleQuote($string)
+    {
+        if (!is_array($string)) {
+            foreach ($string as $key => $value) {
+                $string[$key] = self::escapeSingleQuote($value);
+            }
+        } elseif (is_object($string)) {
+            foreach (get_object_vars($string) as $key => $value) {
+                $string->{$key} = self::escapeSingleQuote($value);
+            }
+        } elseif(is_string($string)) {
+            $string = str_replace("\\\'", "\'", preg_replace('/\'/', "\'", $string));
+        }
+
+        return $string;
+    }
+
+    /**
+     * Escaping or add backslash if has no escaped of double quote
+     * @param  mixed    $string values to be escaped
+     * @return mixed
+     */
+    public static function escapeDoubleQuote($string)
+    {
+        if (!is_array($string)) {
+            foreach ($string as $key => $value) {
+                $string[$key] = self::escapeDoubleQuote($value);
+            }
+        } elseif (is_object($string)) {
+            foreach (get_object_vars($string) as $key => $value) {
+                $string->{$key} = self::escapeDoubleQuote($value);
+            }
+        } elseif(is_string($string)) {
+            $string = str_replace('\\\"', '\"', preg_replace('/\"/', '\"', $string));
+        }
+
+        return $string;
+    }
+
+    /**
+     * Escaping or add backslash if has no escaped of double & Single quote
+     * @param  mixed    $string values to be escaped
+     * @return mixed
+     */
+    public static function escapeQuote($string)
+    {
+        if (!is_array($string)) {
+            foreach ($string as $key => $value) {
+                $string[$key] = self::escapeQuote($value);
+            }
+        } elseif (is_object($string)) {
+            foreach (get_object_vars($string) as $key => $value) {
+                $string->{$key} = self::escapeQuote($value);
+            }
+        } elseif(is_string($string)) {
+            $string = str_replace(
+                array('\\\"', "\\\'"),
+                array('\"', "\'"),
+                preg_replace('/(\"|\')/', '\$1', $string)
+            );
         }
 
         return $string;
