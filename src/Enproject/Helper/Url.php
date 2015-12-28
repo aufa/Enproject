@@ -153,8 +153,19 @@ class Url extends Singleton
         $domain = strtolower($domain);
         $domain = preg_replace('/((http|ftp)s?|sftp|xmp):\/\//i', '', $domain);
         $domain = preg_replace('/\/.*$/', '', $domain);
+        $is_ip = filter_var($domain, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+        if (!$is_ip) {
+            $is_ip = filter_var($domain, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
+        }
+        if (!$is_ip) {
+            $parse  = parse_url('http://'.$domain.'/');
+            $domain = isset($parse['host']) ? $parse['host'] : null;
+            if ($domain === null) {
+                return null;
+            }
+        }
         if (!preg_match('/^((\[[0-9a-f:]+\])|(\d{1,3}(\.\d{1,3}){3})|[a-z0-9\-\.]+)(:\d+)?$/i', $domain)
-            || filter_var($domain, FILTER_VALIDATE_IP)
+            || $is_ip
             || $domain == '127.0.0.1'
             || $domain == 'localhost'
             ) {
