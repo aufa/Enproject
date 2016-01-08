@@ -95,7 +95,7 @@ class Server extends Singleton
      *
      * @return boolean
      */
-    public function isSSL()
+    public static function isSSL()
     {
         return (static::httpProtocol() === 'https');
     }
