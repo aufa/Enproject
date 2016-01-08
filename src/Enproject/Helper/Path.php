@@ -97,20 +97,19 @@ class Path extends Singleton
     {
         static $root;
         if (is_null($root)) {
-            $directory = Server::get('DOCUMENT_ROOT')
-                ? realpath(Server::get('DOCUMENT_ROOT'))
+            $directory = !empty($_SERVER['DOCUMENT_ROOT'])
+                ? realpath($_SERVER['DOCUMENT_ROOT'])
                 : (
-                    Server::get('CONTEXT_DOCUMENT_ROOT')
-                    ? Server::get('CONTEXT_DOCUMENT_ROOT')
-                    : null
+                    !empty($_SERVER['CONTEXT_DOCUMENT_ROOT'])
+                    ? $_SERVER['CONTEXT_DOCUMENT_ROOT']
+                    : substr(
+                        rtrim(self::currentRootpath(), '/'),
+                        0,
+                        -(rtrim(strlen(dirname($_SERVER['SCRIPT_NAME'])), '/'))
+                    )
                 );
-
-            if (is_null($directory)) {
-                $root = Server::get('SCRIPT_FILENAME') ? static::cleanSlashed(dirname(Server::get('SCRIPT_FILENAME'))) : '';
-            } else {
-                $root = rtrim(static::cleanSlashed($directory), '/');
-            }
-        }
+                $root = rtrim(self::cleanSlashed($directory), '/');
+         }
 
         return $root;
     }
@@ -132,7 +131,6 @@ class Path extends Singleton
     /**
      * Geting path after root Path , this will be shown after
      *     Root path only
-     *
      * @param  string $path the path to be clean, make sure to get right values
      *                      checking path (path) must be check on after root path
      * @return string       if match path with root path
@@ -140,9 +138,10 @@ class Path extends Singleton
     public static function getPathAfterRoot($path)
     {
         $root = static::currentRootpath();
-        $path = rtrim(static::cleanSlashed($path), '/');
+        $path = rtrim(self::cleanSlashed($path), '/');
         if (strpos($path, $root) !== false) {
-            return '/'.trim(preg_replace('/^'.preg_quote($root, '/').'/', '', $path), '/');
+            $path =  substr($path, strlen($root));
+            return '/'.trim($path, '/');
         }
 
         return null;
@@ -151,7 +150,6 @@ class Path extends Singleton
     /**
      * Geting path after Document root Path , this will be shown after
      *     Document Root path only
-     *
      * @param  string $path the path to be clean, make sure to get right values
      *                      checking path (path) must be check on after root path
      * @return string       if match path with root path
@@ -161,7 +159,8 @@ class Path extends Singleton
         $root = static::documentRoot();
         $path = rtrim(self::cleanSlashed($path), '/');
         if (strpos($path, $root) !== false) {
-            return '/'.trim(preg_replace('/^'.preg_quote($root, '/').'/', '', $path), '/');
+            $path =  substr($path, strlen($root));
+            return '/'.trim($path, '/');
         }
 
         return null;
