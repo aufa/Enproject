@@ -546,7 +546,7 @@ class Filter extends Singleton
      */
     public static function escapeSingleQuote($string)
     {
-        if (!is_array($string)) {
+        if (is_array($string)) {
             foreach ($string as $key => $value) {
                 $string[$key] = self::escapeSingleQuote($value);
             }
@@ -568,7 +568,7 @@ class Filter extends Singleton
      */
     public static function escapeDoubleQuote($string)
     {
-        if (!is_array($string)) {
+        if (is_array($string)) {
             foreach ($string as $key => $value) {
                 $string[$key] = self::escapeDoubleQuote($value);
             }
@@ -590,7 +590,7 @@ class Filter extends Singleton
      */
     public static function escapeQuote($string)
     {
-        if (!is_array($string)) {
+        if (is_array($string)) {
             foreach ($string as $key => $value) {
                 $string[$key] = self::escapeQuote($value);
             }
