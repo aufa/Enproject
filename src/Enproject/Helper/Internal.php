@@ -401,7 +401,7 @@ class Internal extends Singleton
         $i = 0;
         $output = "";
         // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-        $string = preg_replace("[^A-Za-z0-9\+\/\=]", "", $string);
+        $string = preg_replace("/[^A-Za-z0-9\+\/\=]/", "", $string);
         do {
             $enc1 = strpos($keyStr, substr($string, $i++, 1));
             $enc2 = strpos($keyStr, substr($string, $i++, 1));
@@ -693,7 +693,7 @@ class Internal extends Singleton
                 static::isDir($path.$file) && $path .= '/';
 
                 if (($directory_depth < 1 || $new_depth > 0) &&  static::isDir($path.$file)) {
-                    $filedata[$file] = static::readDir($path.$file, $new_depth, $hidden);
+                    $filedata[$file] = static::readDirList($path.$file, $new_depth, $hidden);
                 } else {
                     $filedata[] = $file;
                 }
