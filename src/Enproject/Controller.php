@@ -16,7 +16,7 @@ use Aufa\Enproject\Abstracts\Singleton;
 use Aufa\Enproject\Helper\Filter;
 use Aufa\Enproject\Helper\Html;
 use Aufa\Enproject\Helper\Path;
-use Aufa\Enproject\Helper\String;
+use Aufa\Enproject\Helper\StringHelper;
 use Aufa\Enproject\Helper\Template;
 use Aufa\Enproject\Http\Request;
 use Aufa\Enproject\Http\Response;
@@ -399,8 +399,8 @@ class Controller extends Singleton
                     ),
                     array(
                         round(Benchmark::get('app'), 6),
-                        String::sizeFormat(Benchmark::getMemory(), 2),
-                        String::sizeFormat(Benchmark::getRealMemory(), 2),
+                        StringHelper::sizeFormat(Benchmark::getMemory(), 2),
+                        StringHelper::sizeFormat(Benchmark::getRealMemory(), 2),
                         '%[benchmark]%',
                         '%[memory]%',
                         '%[real_memory]%',
@@ -423,7 +423,7 @@ class Controller extends Singleton
              * Clean Body Output from empty non ascii characters
              * set second parameters to false because this is not URL
              */
-            $body = String::removeInvisibleCharacters($body, false);
+            $body = StringHelper::removeInvisibleCharacters($body, false);
 
             /**
              * set response body

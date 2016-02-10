@@ -239,7 +239,7 @@ apply_filters('fn_name', 'return1', 'arg1', etc...);
      */
     $string_helper = $application->helper_string;
     // or
-    $string_helper = $application->get("Helper\\String");
+    $string_helper = $application->get("Helper\\StringHelper");
     // or
     $string_helper = $application->get("Helper_String");
 ```

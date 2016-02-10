@@ -17,7 +17,7 @@ use Aufa\Enproject\Http\Request;
 use Aufa\Enproject\Request\Server;
 use Aufa\Enproject\Request\Get;
 use Aufa\Enproject\Helper\Path;
-use Aufa\Enproject\Helper\String;
+use Aufa\Enproject\Helper\StringHelper;
 
 /**
  * URL Class Request URI parser
@@ -201,7 +201,7 @@ class Url extends Singleton
     {
         $this->x_uri_blocked = false;
         // Filter out control characters and trim slashes
-        $this->x_uri_string = trim(String::removeInvisibleCharacters($str, false), '/');
+        $this->x_uri_string = trim(StringHelper::removeInvisibleCharacters($str, false), '/');
 
         if ($this->x_uri_string !== '') {
             // Remove the URL suffix, if present

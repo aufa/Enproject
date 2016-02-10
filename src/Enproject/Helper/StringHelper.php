@@ -17,7 +17,7 @@ use Aufa\Enproject\Abstracts\Singleton;
 /**
  * Helper of string value
  */
-class String extends Singleton
+class StringHelper extends Singleton
 {
     /**
      * Remove Invisible Characters

@@ -15,7 +15,7 @@ namespace Aufa\Enproject\Helper;
 use Aufa\Enproject\Abstracts\Singleton;
 use Aufa\Enproject\Config;
 use Aufa\Enproject\Helper\Internal;
-use Aufa\Enproject\Helper\String;
+use Aufa\Enproject\Helper\StringHelper;
 use Aufa\Enproject\Cryptography\Sha256;
 use Aufa\Enproject\Cryptography\Sha1;
 
@@ -57,7 +57,7 @@ class Security extends Singleton
         $hash = ! $hash ? Config::get('security_salt', '') : $hash;
         (is_null($hash) || $hash === false) && $hash = '';
         // safe is use array or object as hash
-        $hash      = String::maybeSerialize($hash);
+        $hash      = StringHelper::maybeSerialize($hash);
 
         /**
          * ------------------------------------
@@ -150,7 +150,7 @@ class Security extends Singleton
         $hash = ! $hash ? Config::get('security_salt', '') : $hash;
         (is_null($hash) || $hash === false) && $hash = '';
         // safe is use array or object as hash
-        $hash        = String::maybeSerialize($hash);
+        $hash        = StringHelper::maybeSerialize($hash);
 
         /**
          * ------------------------------------
@@ -181,7 +181,7 @@ class Security extends Singleton
         /**
          * unserialize the string, that before has been serialize
          */
-        $decrypttext = String::maybeUnserialize(trim($decrypttext));
+        $decrypttext = StringHelper::maybeUnserialize(trim($decrypttext));
 
         /**
          * Check if value is array
@@ -228,7 +228,7 @@ class Security extends Singleton
         $pass = ! $pass ? Config::get('security_salt', '') : $pass;
         (is_null($pass) || $pass === false) && $pass = '';
         // safe is use array orobject as hash
-        $pass = String::maybeSerialize($pass);
+        $pass = StringHelper::maybeSerialize($pass);
         if (!$pass) {
             $pass = Sha1::hash($pass);
         }
@@ -327,7 +327,7 @@ class Security extends Singleton
         $pass = ! $pass ? Config::get('security_salt', '') : $pass;
         (is_null($pass) || $pass === false) && $pass = '';
         // safe is use array orobject as hash
-        $pass = String::maybeSerialize($pass);
+        $pass = StringHelper::maybeSerialize($pass);
         if (!$pass) {
             $pass = Sha1::hash($pass);
         }
@@ -387,7 +387,7 @@ class Security extends Singleton
          * For some case packing returning invisible characters
          * remove it
          */
-        $retval = String::removeInvisibleCharacters($retval, false);
+        $retval = StringHelper::removeInvisibleCharacters($retval, false);
         // check if string less than 40 && match end of hash
         if (strlen($retval) < 40 || substr($retval, -40) !== Sha1::hash(Sha256::hash($pass))) {
             return;
@@ -395,7 +395,7 @@ class Security extends Singleton
         // remove last 40 characters
         $retval = substr($retval, 0, (strlen($retval)-40));
         // check if result is not string it will be need to be unserialize
-        $retval = String::maybeUnserialize($retval);
+        $retval = StringHelper::maybeUnserialize($retval);
 
         /**
          * Check if value is array
