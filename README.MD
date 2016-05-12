@@ -1,7 +1,10 @@
 # Enproject
 
-[BETA DEVELOPMENT] Enproject Simple PHP Framework Library
-
+[BETA DEVELOPMENT] Enproject Simple PHP Framework Library - For My Project only
+`
+There was any bugs here ...
+but i was done for some on my local storage & no time to update this script periodically ..
+`
 Create Application using `Enproject` Simple Framework easily.
 
 Base on MWYS (Models Whatever You Say)
