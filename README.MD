@@ -171,7 +171,7 @@ apply_filters('fn_name', 'return1', 'arg1', etc...);
 ## Benchmark Shortcode
 
     * %[benchmark]%      as benchmark total time application execute
-    * %[memory]%         as benchmark total memoery application use
+    * %[memory]%         as benchmark total memory application use
     * %[real_memory]%    as benchmark total real memory application use
 
 `to avoid being replace escape use backslash '\' eg : `
