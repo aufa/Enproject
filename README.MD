@@ -1,6 +1,6 @@
 # Enproject
 
-[BETA DEVELOPMENT] Enproject Simple PHP Framework Library - For My Project only
+[ALPHA DEVELOPMENT] Enproject Simple PHP Framework Library - For My Project only
 `
 There was any bugs here ...
 but i was done for some on my local storage & no time to update this script periodically ..
