@@ -173,35 +173,35 @@ class Hook extends Singleton
 
         $args = array();
         // Do 'all' actions first.
-        if (isset($hookName->x_filters['all'])) {
-            $hookName->x_current[] = $hookName;
+        if (isset($instance->x_filters['all'])) {
+            $instance->x_current[] = $hookName;
             $args = func_get_args();
-            $hookName->callAllHook($args);
+            $instance->callAllHook($args);
         }
 
-        if (! isset($hookName->x_filters[$hookName])) {
-            if (isset($hookName->x_filters['all'])) {
-                array_pop($hookName->x_current);
+        if (! isset($instance->x_filters[$hookName])) {
+            if (isset($instance->x_filters['all'])) {
+                array_pop($instance->x_current);
             }
             return $value;
         }
 
-        if (! isset($hookName->x_filters['all'])) {
-            $hookName->x_current[] = $hookName;
+        if (! isset($instance->x_filters['all'])) {
+            $instance->x_current[] = $hookName;
         }
 
         // Sort.
-        if (!isset($hookName->x_merged[$hookName])) {
-            ksort($hookName->x_filters[$hookName]);
-            $hookName->x_merged[$hookName] = true;
+        if (!isset($instance->x_merged[$hookName])) {
+            ksort($instance->x_filters[$hookName]);
+            $instance->x_merged[$hookName] = true;
         }
 
-        reset($hookName->x_filters[$hookName]);
+        reset($instance->x_filters[$hookName]);
         if (empty($args)) {
             $args = func_get_args();
         }
         do {
-            foreach ((array) current($hookName->x_filters[$hookName]) as $the_) {
+            foreach ((array) current($instance->x_filters[$hookName]) as $the_) {
                 if (!is_null($the_['function'])) {
                     $args[1] = $value;
                     $value = call_user_func_array(
@@ -210,9 +210,9 @@ class Hook extends Singleton
                     );
                 }
             }
-        } while (next($hookName->x_filters[$hookName]) !== false);
+        } while (next($instance->x_filters[$hookName]) !== false);
 
-        array_pop($hookName->x_current);
+        array_pop($instance->x_current);
         return $value;
     }
 
@@ -314,12 +314,12 @@ class Hook extends Singleton
         if (!$hookName) {
             throw new \Exception("Invalid Hook Name Specified", E_ERROR);
         }
-        if ($this->has($hookName)) {
-            $this->removeHook($hookName, $function_to_replace);
-            return $this->add($hookName, $callable, $priority, $accepted_args, true);
+        if ($instance->has($hookName)) {
+            $instance->removeHook($hookName, $function_to_replace);
+            return $instance->add($hookName, $callable, $priority, $accepted_args, true);
         }
         if ($create) {
-            return $this->add($hookName, $callable, $priority, $accepted_args, true);
+            return $instance->add($hookName, $callable, $priority, $accepted_args, true);
         }
     }
 
@@ -338,7 +338,7 @@ class Hook extends Singleton
         if (!$hookName) {
             return false;
         }
-        $function_to_remove = $this->createUniqueIdx($hookName, $function_to_remove, $priority);
+        $function_to_remove = $instance->createUniqueIdx($hookName, $function_to_remove, $priority);
         $r = isset($instance->x_filters[$hookName][$priority][$function_to_remove]);
         if (true === $r) {
             unset($instance->x_filters[$hookName][$priority][$function_to_remove]);
