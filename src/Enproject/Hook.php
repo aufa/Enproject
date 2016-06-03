@@ -127,9 +127,10 @@ class Hook extends Singleton
             }
         }
         // recheck
-        if (false === $function_to_check || false === $has ||
-            ! $x_id = $instance->createUniqueIdx($hookName, $function_to_check, false)
-        ) {
+        if (false === $function_to_check || false === $has) {
+            return $has;
+        }
+        if (! $x_id = $instance->createUniqueIdx($hookName, $function_to_check, false)) {
             return false;
         }
 
